@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import Combine
-@MainActor
 
 class ImageLoadingViewModel: ObservableObject {
     
@@ -35,11 +34,11 @@ class ImageLoadingViewModel: ObservableObject {
         
         //get saved image from cache first, if not, download it
         if let savedImage = cacheManager.get(key: imageKey) {
-//            await MainActor.run {
+            await MainActor.run {
                 isLoading = false
                 image = savedImage
                 print("Retrieved from cache!")
-//            }
+            }
         }
         else {
             //download it
@@ -52,24 +51,26 @@ class ImageLoadingViewModel: ObservableObject {
         do {
             if let image = try await loader.downloadWithAsync() {
                 //And because we are in an async environment, you must do the following on the Main thread via a MainActor
-//                await MainActor.run {
+                await MainActor.run {
                     isLoading = false
                     self.image = image
                 //cache the image
                     self.cacheManager.add(key: self.imageKey, value: image)
                 print("Downloaded image!")
-//                }
+                }
             }
             else {
-//                await MainActor.run {
+                await MainActor.run {
                     isLoading = false
                     self.image = UIImage(systemName: "x.circle.fill")
-//                }
+                }
             }
         } catch {
-            isLoading = false
-            //default to this UIImage if there is an error
-            self.image = UIImage(systemName: "x.circle.fill")
+            await MainActor.run {
+                isLoading = false
+                //default to this UIImage if there is an error
+                self.image = UIImage(systemName: "x.circle.fill")
+            }
         }
         
     }
