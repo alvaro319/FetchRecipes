@@ -5,9 +5,6 @@
 //  Created by Alvaro Ordonez on 3/17/24.
 
 import Foundation
-//a singleton actor whose executor is equivalent to the main dispatch queue
-@MainActor //runs the async function below in a background thread
-
 
 class RecipesViewModel : ObservableObject {
 
@@ -43,20 +40,26 @@ class RecipesViewModel : ObservableObject {
             let jsonDecodedRecipes = try JSONDecoder().decode(RecipesModel.self, from: data)
                 
             if(jsonDecodedRecipes.recipes.isEmpty){
-                messageStr = "No Data Found"
-                show = true
+                await MainActor.run {
+                    messageStr = "No Data Found"
+                    show = true
+                }
             }
             else {
                 //received good data
-                show = false
-                self.recipes = jsonDecodedRecipes.recipes
-                print("recipes: \(recipes)")
-                print("Downloaded JSON!")
+                await MainActor.run {
+                    show = false
+                    self.recipes = jsonDecodedRecipes.recipes
+                    print("recipes: \(recipes)")
+                    print("Downloaded JSON!")
+                }
             }
         } catch let error as NSError{
-            show = true
-            messageStr = error.localizedDescription
-            print("Failed to decode: ", error.localizedDescription)
+            await MainActor.run {
+               show = true
+                messageStr = error.localizedDescription
+                print("Failed to decode: ", error.localizedDescription)
+            }
         }
     }//end fetch()
     
@@ -89,20 +92,26 @@ class RecipesViewModel : ObservableObject {
             let jsonDecodedRecipes = try JSONDecoder().decode(RecipesModel.self, from: data)
                 
             if(jsonDecodedRecipes.recipes.isEmpty){
+               await MainActor.run {
                 messageStr = "No Data Found"
                 show = true
+               }
             }
             else {
+               await MainActor.run {
                 show = false
                 self.recipes = jsonDecodedRecipes.recipes
+               }
 //                print("Recipes Downloaded!")
 //                print(response)
 //                print(jsonDecodedRecipes.recipes)
             }
         } catch let error as NSError{
+           await MainActor.run {
             show = true
             messageStr = error.localizedDescription
             print("Failed to decode: ", error.localizedDescription)
+           }
         }
     }//end fetchTest()
 
