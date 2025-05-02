@@ -8,36 +8,31 @@
 import SwiftUI
 import UIKit
 
-class ViewRefresh: ObservableObject {
-        
-    //@Published says any time a change is made to this var, let SwiftUI know
-    @Published var isRefresh = false
-}
-
 struct RecipesView: View {
     
     @StateObject var recipesViewModel = RecipesViewModel()
-    @ObservedObject var viewRefresh = ViewRefresh()
+    @State var isRefresh: Bool = false
         
     var body: some View {
         
         NavigationView {
             List (recipesViewModel.recipes, id:\.uuid) { item in
-                RecipeRowView(recipe: item, viewRefresh: viewRefresh)
+                RecipeRowView(recipe: item, isItARefresh: $isRefresh)
             }.navigationTitle("Recipes")
             //if user refreshes the screen swiping down
             .refreshable {
 //                print("Refresh!")
-                viewRefresh.isRefresh = true
-                //Leave this for testing:
-                //await recipesViewModel.fetchTest()
+                isRefresh = true
                 
+                //Leave this for testing... testing
+                //for refresh feature using JSON on github:
+                //await recipesViewModel.fetchTest()
                 await recipesViewModel.fetch()
             }
         }//end NavigationView
         .task{
 //            print(".task")
-            viewRefresh.isRefresh = false
+            isRefresh = false
             await recipesViewModel.fetch()
         }
         .alert(isPresented: $recipesViewModel.show, content: {
