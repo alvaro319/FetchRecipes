@@ -6,6 +6,58 @@
 
 import Foundation
 
+//Uses Dependency Injection with NetworkDataServiceManager
+class RecipesViewModel2: ObservableObject {
+    
+    @Published var recipes: [Recipe] = []
+    @Published var show: Bool = false
+    @Published var titleStr = "Alert!"
+    @Published var messageStr = "Something went wrong!"
+    
+    private var networkManager: NetworkDataService
+    
+    //Use a if let to create a URL object and pass it in when creating NetworkDataService object first, then dependency inject the NetworkDataService object into this viewModel
+    init(networkMgr: NetworkDataService) {
+        self.networkManager = networkMgr
+    }
+    
+    func fetch() async {
+        do {
+            //fetch the data from the API
+            let data = try await networkManager.getData()
+            
+            //RecipesModel is the type of data being returned. It is an array of recipes, therefore, below need to get the RecipesModel object's recipes.
+            let jsonDecodedRecipes = try JSONDecoder().decode(RecipesModel.self, from: data)
+                
+            if(jsonDecodedRecipes.recipes.isEmpty){
+                await MainActor.run {
+                    messageStr = "No Data Found"
+                    show = true
+                }
+            }
+            else {
+                //received good data
+                await MainActor.run {
+                    show = false
+                    self.recipes = jsonDecodedRecipes.recipes
+                    print("recipes: \(recipes)")
+                    print("Downloaded JSON!")
+                }
+            }
+
+        }
+        catch let error as NSError{
+            await MainActor.run {
+               show = true
+                messageStr = "Malformed Data: " + error.localizedDescription
+                print("Failed to decode(malformed data): ", error.localizedDescription)
+            }
+        }
+    }
+}
+
+//Original RecipesViewModel - No Dependency Injection
+/*
 class RecipesViewModel : ObservableObject {
 
     @Published var recipes: [Recipe] = []
@@ -116,4 +168,4 @@ class RecipesViewModel : ObservableObject {
     }//end fetchTest()
 
 }
-    
+*/
