@@ -2,11 +2,11 @@
 //  RecipesViewModel.swift
 //  Recipes
 //
-//  Created by Alvaro Ordonez on 3/17/24.
+//  Created by Alvaro Ordonez on 3/17/25.
 
 import Foundation
 
-//Uses Dependency Injection with NetworkDataServiceManager
+//Uses Dependency Injection with NetworkDataServiceManagerProtocol
 class RecipesViewModel2: ObservableObject {
     
     @Published var recipes: [Recipe] = []
@@ -14,10 +14,11 @@ class RecipesViewModel2: ObservableObject {
     @Published var titleStr = "Alert!"
     @Published var messageStr = "Something went wrong!"
     
-    private var networkManager: NetworkDataService
+    //private var networkManager: NetworkDataService
+    private var networkManager: NetworkDataServiceManagerProtocol
     
-    //Use a if let to create a URL object and pass it in when creating NetworkDataService object first, then dependency inject the NetworkDataService object into this viewModel
-    init(networkMgr: NetworkDataService) {
+    //Use a if let to create a URL object and pass it in when creating NetworkDataService object first, then dependency inject the NetworkDataServiceManagerProtocol object into this viewModel
+    init(networkMgr: NetworkDataServiceManagerProtocol) {
         self.networkManager = networkMgr
     }
     

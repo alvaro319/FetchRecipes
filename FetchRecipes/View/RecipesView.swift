@@ -50,6 +50,7 @@ struct RecipesView2: View {
     @State var isRefresh: Bool = false
     
     //Dependency inject the network data service manager
+    //TBD, possibly dependency inject a PhotoModelCacheManager object here, similarly to networkManager object in init
     init(networkManager: NetworkDataService)
     {
         _recipesViewModel2 = StateObject(wrappedValue: RecipesViewModel2(networkMgr: networkManager))
