@@ -21,7 +21,7 @@ struct RecipesApp: App {
             //if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-empty.json") {
                 
             if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json") {
-                let networkServiceManager = NetworkDataService(url: url)
+                let networkServiceManager = NetworkDataServiceManager(url: url)
                 RecipesView2(networkManager: networkServiceManager)
             }
             //RecipesView()

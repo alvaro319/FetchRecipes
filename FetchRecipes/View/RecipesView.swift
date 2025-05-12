@@ -51,7 +51,7 @@ struct RecipesView2: View {
     
     //Dependency inject the network data service manager
     //TBD, possibly dependency inject a PhotoModelCacheManager object here, similarly to networkManager object in init
-    init(networkManager: NetworkDataService)
+    init(networkManager: NetworkDataServiceManager)
     {
         _recipesViewModel2 = StateObject(wrappedValue: RecipesViewModel2(networkMgr: networkManager))
     }
@@ -59,6 +59,8 @@ struct RecipesView2: View {
     var body: some View {
         
         NavigationView {
+            //if a 'let id: Int' is included in the model struct, then the struct must conform to the Identifiable protocol
+            //Here, uuid is the identifier that distinguishes one recipe from another since the RecipesModel struct doesn't have a 'let id: Int'
             List (recipesViewModel2.recipes, id:\.uuid) { item in
                 RecipeRowView(recipe: item, isItARefresh: $isRefresh)
             }.navigationTitle("Recipes")
@@ -86,7 +88,7 @@ struct RecipesView2: View {
 
 #Preview {
     if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json") {
-        let networkServiceManager = NetworkDataService(url: url)
+        let networkServiceManager = NetworkDataServiceManager(url: url)
         RecipesView2(networkManager: networkServiceManager)
     }
     //RecipesView()

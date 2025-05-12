@@ -15,10 +15,10 @@ class RecipesViewModel2: ObservableObject {
     @Published var messageStr = "Something went wrong!"
     
     //private var networkManager: NetworkDataService
-    private var networkManager: NetworkDataServiceManagerProtocol
+    private var networkManager: NetworkDataServiceProtocol
     
     //Use a if let to create a URL object and pass it in when creating NetworkDataService object first, then dependency inject the NetworkDataServiceManagerProtocol object into this viewModel
-    init(networkMgr: NetworkDataServiceManagerProtocol) {
+    init(networkMgr: NetworkDataServiceProtocol) {
         self.networkManager = networkMgr
     }
     

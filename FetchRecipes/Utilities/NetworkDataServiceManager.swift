@@ -8,11 +8,11 @@
 import Foundation
 import SwiftUI
 
-protocol NetworkDataServiceManagerProtocol {
+protocol NetworkDataServiceProtocol {
     func getData() async throws -> Data
 }
 
-class NetworkDataService: NetworkDataServiceManagerProtocol  {
+class NetworkDataServiceManager: NetworkDataServiceProtocol  {
     
     let url: URL
     
