@@ -44,7 +44,7 @@ struct RecipesView: View {
 }
  */
 
-struct RecipesView2: View {
+struct RecipesView: View {
     
     @StateObject var recipesViewModel2: RecipesViewModel2
     @State var isRefresh: Bool = false
@@ -89,7 +89,7 @@ struct RecipesView2: View {
 #Preview {
     if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json") {
         let networkServiceManager = NetworkDataServiceManager(url: url)
-        RecipesView2(networkManager: networkServiceManager)
+        RecipesView(networkManager: networkServiceManager)
     }
     //RecipesView()
 }
