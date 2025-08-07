@@ -21,6 +21,7 @@ struct RecipeImageView: View {
     init(url: String, key: String, itsARefresh: Binding<Bool>) {
         _imageLoaderViewModel = StateObject(wrappedValue: ImageLoadingViewModel(url: url, key: key))
         _isItARefresh = itsARefresh
+        print("New ImageLoadingViewModel Created!")
     }
     
     var body: some View {

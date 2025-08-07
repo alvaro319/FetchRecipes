@@ -13,7 +13,7 @@ struct RecipesModel: Codable {
 
 // MARK: - Recipe
 //if a let id: Int is included in the model struct, then the struct must conform to the Identifiable protocol
-//Here, uuid is the identifier that distinguishes one recipe from another, include the id:\.uuid when looping through the list of recipes as the distinguishing id: List (recipesViewModel2.recipes, id:\.uuid)
+//Here, uuid is the identifier that distinguishes one recipe from another, include the id:\.uuid when looping through the list of recipes as the distinguishing id: List (recipesViewModel.recipes, id:\.uuid)
 struct Recipe: Codable {
     let cuisine, name: String
     let photoURLLarge, photoURLSmall: String

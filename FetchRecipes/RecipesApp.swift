@@ -20,6 +20,7 @@ struct RecipesApp: App {
             //Empty Data:
             //if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-empty.json") {
                 
+            //Use a if let to create a URL object and pass it in when creating NetworkDataService object first, then dependency inject the NetworkDataServiceManagerProtocol object into the view
             if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json") {
                 let networkServiceManager = NetworkDataServiceManager(url: url)
                 RecipesView(networkManager: networkServiceManager)

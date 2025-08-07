@@ -7,7 +7,7 @@
 import Foundation
 
 //Uses Dependency Injection with NetworkDataServiceManagerProtocol
-class RecipesViewModel2: ObservableObject {
+class RecipesViewModel: ObservableObject {
     
     @Published var recipes: [Recipe] = []
     @Published var show: Bool = false
@@ -17,7 +17,7 @@ class RecipesViewModel2: ObservableObject {
     //private var networkManager: NetworkDataService
     private var networkManager: NetworkDataServiceProtocol
     
-    //Use a if let to create a URL object and pass it in when creating NetworkDataService object first, then dependency inject the NetworkDataServiceManagerProtocol object into this viewModel
+    //dependency inject the NetworkDataServiceManagerProtocol object into this viewModel
     init(networkMgr: NetworkDataServiceProtocol) {
         self.networkManager = networkMgr
     }
@@ -57,9 +57,9 @@ class RecipesViewModel2: ObservableObject {
     }
 }
 
-//Original RecipesViewModel - No Dependency Injection
+//Original RecipesViewModel - No Dependency Injection(NDI)
 /*
-class RecipesViewModel : ObservableObject {
+class RecipesViewModelNDI : ObservableObject {
 
     @Published var recipes: [Recipe] = []
     @Published var show: Bool = false
