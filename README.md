@@ -28,4 +28,4 @@ I tested the app with a Url that had malformed data and an empty data set. I did
 
 ### Additional Information
 
-I will be adding more features over time and maybe making the code even more efficient and scalable. I may add a launch screen along with a view that will require a user to onboard and authenticate. Perhaps I may add a new target in this project to do XCTesting as well as add a second view for each recipe to show a Details View. More to come in the near future.
+I will be adding more features over time. Some features that may be added are an icon/launch screen along with adding an additional target to this project to include XCTesting. I was also thinking of creating a Details View when the user selects a recipe from a row.
