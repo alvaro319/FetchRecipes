@@ -28,4 +28,4 @@ I tested the app with a Url that had malformed data and an empty data set. I did
 
 ### Additional Information
 
-I will be adding more features over time. Some features that may be added are an icon/launch screen along with adding an additional target to this project to include XCTesting. I was also thinking of creating a Details View when the user selects a recipe from a row.
+I have pondered replacing the cache manager image persistence by leveraging SDWebImage or KingFisher SDKs. Some other features that may be added are an icon/launch screen along with adding an additional target to this project to include XCTesting. I was also thinking of creating a DetailsView when the user selects a recipe from a row. Time permitting, these features will be added.
