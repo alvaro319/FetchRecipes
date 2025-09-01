@@ -9,22 +9,24 @@ import Foundation
 import SwiftUI
 
 protocol NetworkDataServiceProtocol {
-    func getData() async throws -> Data
+    func getData(url: URL) async throws -> Data
 }
 
 class NetworkDataServiceManager: NetworkDataServiceProtocol  {
     
-    let url: URL
+//    let url: URL
+//    
+//    init(url: URL) {
+//        self.url = url
+//    }
     
-    init(url: URL) {
-        self.url = url
-    }
-    
-    func getData() async throws -> Data {
+    func getData(url: URL) async throws -> Data {
         //use a URLSession object(this does the networking part) to create a task using the URL object
         let (data, response) = try await URLSession.shared.data(from: url)
         
-        guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode >= 200 && httpURLResponse.statusCode < 300 else {
+        guard
+            let httpURLResponse = response as? HTTPURLResponse,
+                httpURLResponse.statusCode >= 200 && httpURLResponse.statusCode < 300 else {
             throw URLError(.badServerResponse)
         }
         

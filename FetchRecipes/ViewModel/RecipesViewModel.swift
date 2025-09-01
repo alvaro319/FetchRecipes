@@ -24,25 +24,27 @@ class RecipesViewModel: ObservableObject {
     
     func fetch() async {
         do {
-            //fetch the data from the API
-            let data = try await networkManager.getData()
-            
-            //RecipesModel is the type of data being returned. It is an array of recipes, therefore, below need to get the RecipesModel object's recipes.
-            let jsonDecodedRecipes = try JSONDecoder().decode(RecipesModel.self, from: data)
+            if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json") {
+                //fetch the data from the API
+                let data = try await networkManager.getData(url: url)
                 
-            if(jsonDecodedRecipes.recipes.isEmpty){
-                await MainActor.run {
-                    messageStr = "No Data Found"
-                    show = true
+                //RecipesModel is the type of data being returned. It is an array of recipes, therefore, below need to get the RecipesModel object's recipes.
+                let jsonDecodedRecipes = try JSONDecoder().decode(RecipesModel.self, from: data)
+                
+                if(jsonDecodedRecipes.recipes.isEmpty){
+                    await MainActor.run {
+                        messageStr = "No Data Found"
+                        show = true
+                    }
                 }
-            }
-            else {
-                //received good data
-                await MainActor.run {
-                    show = false
-                    self.recipes = jsonDecodedRecipes.recipes
-                    print("recipes: \(recipes)")
-                    print("Downloaded JSON!")
+                else {
+                    //received good data
+                    await MainActor.run {
+                        show = false
+                        self.recipes = jsonDecodedRecipes.recipes
+                        print("recipes: \(recipes)")
+                        print("Downloaded JSON!")
+                    }
                 }
             }
 

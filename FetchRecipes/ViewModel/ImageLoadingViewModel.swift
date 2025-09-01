@@ -10,28 +10,33 @@ import SwiftUI
 import Combine
 
 class ImageLoadingViewModel: ObservableObject {
-    
+
     @Published var image: UIImage?
-    let loader: DownloadImageAsyncLoader
-    
+    //let loader: DownloadImageAsyncLoader
+    lazy var networkServiceManager: NetworkDataServiceProtocol = NetworkDataServiceManager()
+
     @Published var isLoading: Bool = true
-        
-    //to reference the singleton to be able to use PhotoModelCacheManager object called 'instance' we create a reference to it
+
+    //to reference the singleton to be able to use PhotoModelCacheManager object
+    //called 'instance' we create a reference to it
     let cacheManager = PhotoModelCacheManager.instance
     let urlString: String
     //this will hold the id(uuid) defined in RecipesModel.swift class
     let imageKey: String
-    
-    init(url: String, key: String) {
-        
-        self.urlString = url
+
+    init(urlString: String, key: String) {
+
+        self.urlString = urlString
         imageKey = key// the images' id
-        
-        loader = DownloadImageAsyncLoader(urlString: urlString)
+        print("New ImageLoadingViewModel Created: \(urlString)")
+        //loader = DownloadImageAsyncLoader(urlString: urlString)
     }
     
-    func fetchImage() async {
-        
+    deinit {
+        print("DEINITIALIZE NOW: \(urlString)")
+    }
+
+    func fetchImage(url: URL) async {
         //get saved image from cache first, if not, download it
         if let savedImage = cacheManager.get(key: imageKey) {
             await MainActor.run {
@@ -42,37 +47,48 @@ class ImageLoadingViewModel: ObservableObject {
         }
         else {
             //download it
-            await fetchImageAsyncLoader()
+            await fetchImageAsyncLoader(url: url)
         }
     }
-    
-    func fetchImageAsyncLoader() async {
-        
+
+    func fetchImageAsyncLoader(url: URL) async {
         do {
-            if let image = try await loader.downloadWithAsync() {
-                //And because we are in an async environment, you must do the following on the Main thread via a MainActor
-                await MainActor.run {
-                    isLoading = false
-                    self.image = image
-                //cache the image
-                    self.cacheManager.add(key: self.imageKey, value: image)
-                print("Downloaded image!")
+            if let url = URL(string: self.urlString) {
+                //let networkServiceManager = NetworkDataServiceManager(url: url)
+                let data = try await networkServiceManager.getData(url: url)
+                if let image = UIImage(data: data){
+                    await MainActor.run {
+                        isLoading = false
+                        self.image = image
+                        //cache the image
+                        self.cacheManager.add(key: self.imageKey, value: image)
+                        print("Downloaded image!")
+                    }
+                }
+                else {
+                    await MainActor.run {
+                        defaultImageOnError()
+                    }
                 }
             }
             else {
                 await MainActor.run {
-                    isLoading = false
-                    self.image = UIImage(systemName: "x.circle.fill")
+                    defaultImageOnError()
                 }
             }
         } catch {
             await MainActor.run {
-                isLoading = false
-                //default to this UIImage if there is an error
-                self.image = UIImage(systemName: "x.circle.fill")
+                defaultImageOnError()
             }
         }
-        
     }
-        
+    
+    public func setDefaultImageOnError() {
+        defaultImageOnError()
+    }
+    
+    private func defaultImageOnError() {
+        isLoading = false
+        self.image = UIImage(systemName: "x.circle.fill")
+    }
 }

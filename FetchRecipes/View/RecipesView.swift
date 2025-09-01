@@ -50,7 +50,8 @@ struct RecipesView: View {
     @State var isRefresh: Bool = false
     
     //Dependency inject the network data service manager
-    //TBD, possibly dependency inject a PhotoModelCacheManager object here, similarly to networkManager object in init
+    //TBD, possibly dependency inject a PhotoModelCacheManager object here,
+    //similarly to networkManager object in init
     init(networkManager: NetworkDataServiceManager)
     {
         _recipesViewModel = StateObject(wrappedValue: RecipesViewModel(networkMgr: networkManager))
@@ -59,12 +60,12 @@ struct RecipesView: View {
     var body: some View {
         
         NavigationView {
-            //if a 'let id: Int' is included in the model struct, then the struct must conform to the Identifiable protocol
-            //Here, uuid is the identifier that distinguishes one recipe from another since the RecipesModel struct doesn't have a 'let id: Int'
-            //Here we are declaring the uuid property of the struct is the id that will distinguish one recipe from another
-            
+            /*
+            if a 'let id: Int' is included in the model struct, then the struct must conform to the Identifiable protocol. Here, uuid is the identifier that distinguishes one recipe from another since the RecipesModel struct doesn't have a 'let id: Int'.
+             Here we are declaring the uuid property of the struct is the id that will distinguish one recipe from another
+            */
             List (recipesViewModel.recipes, id:\.uuid) { item in
-                RecipeRowView(recipe: item, isItARefresh: $isRefresh)
+                RecipeRowView(recipe: item, isRefresh: $isRefresh)
      
             }.navigationTitle("Recipes")
             //if user refreshes the screen swiping down
@@ -72,9 +73,9 @@ struct RecipesView: View {
                 //print("Refresh!")
                 isRefresh = true
                 
-                //Leave this for testing... testing
                 //for refresh feature using JSON on github:
-                //await recipesViewModel.fetchTest()
+                //await recipesViewModel.fetchTest()//Use for testing
+                
                 await recipesViewModel.fetch()
             }
             
@@ -102,7 +103,7 @@ struct RecipesView: View {
              
         }//end NavigationView
         .task{
-//            print(".task")
+            //print(".task")
             isRefresh = false
             await recipesViewModel.fetch()
         }
@@ -113,9 +114,12 @@ struct RecipesView: View {
 }
 
 #Preview {
-    if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json") {
-        let networkServiceManager = NetworkDataServiceManager(url: url)
-        RecipesView(networkManager: networkServiceManager)
-    }
+    let networkServiceManager = NetworkDataServiceManager()
+    RecipesView(networkManager: networkServiceManager)
+    
+//    if let url = URL(string: "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json") {
+//        let networkServiceManager = NetworkDataServiceManager(url: url)
+//        RecipesView(networkManager: networkServiceManager)
+//    }
     //RecipesView()
 }

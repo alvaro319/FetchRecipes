@@ -11,11 +11,11 @@ import SwiftUI
 struct RecipeRowView: View {
     
     let recipe: Recipe
-    @Binding var isItARefresh: Bool
+    @Binding var isRefresh: Bool
     
     var body: some View {
         HStack {
-            RecipeImageView(url: recipe.photoURLSmall, key: recipe.uuid, itsARefresh: $isItARefresh)
+            RecipeImageView(urlString: recipe.photoURLSmall, key: recipe.uuid, isRefresh: $isRefresh)
             .frame(width: 80, height: 80)
             VStack(alignment:.leading){
                 Text("Cuisine Type: \(recipe.cuisine)")
@@ -37,6 +37,6 @@ struct RecipeRowView: View {
                 sourceURL: "https://www.bbcgoodfood.com/recipes/778642/apple-and-blackberry-crumble",
                 uuid: "599344f4-3c5c-4cca-b914-2210e3b3312f",
                 youtubeURL: "https://www.youtube.com/watch?v=4vhcOwVBDO4"
-            ), isItARefresh: .constant(true))
+            ), isRefresh: .constant(true))
     .padding()
 }
