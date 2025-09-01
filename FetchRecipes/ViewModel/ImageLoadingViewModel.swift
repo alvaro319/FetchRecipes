@@ -13,7 +13,7 @@ class ImageLoadingViewModel: ObservableObject {
 
     @Published var image: UIImage?
     //let loader: DownloadImageAsyncLoader
-    lazy var networkServiceManager: NetworkDataServiceProtocol = NetworkDataServiceManager()
+    var networkServiceManager: NetworkDataServiceProtocol = NetworkDataServiceManager()
 
     @Published var isLoading: Bool = true
 
