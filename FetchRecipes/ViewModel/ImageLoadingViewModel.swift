@@ -12,7 +12,6 @@ import Combine
 class ImageLoadingViewModel: ObservableObject {
 
     @Published var image: UIImage?
-    //let loader: DownloadImageAsyncLoader
     var networkServiceManager: NetworkDataServiceProtocol = NetworkDataServiceManager()
 
     @Published var isLoading: Bool = true
@@ -29,7 +28,6 @@ class ImageLoadingViewModel: ObservableObject {
         self.urlString = urlString
         imageKey = key// the images' id
         print("New ImageLoadingViewModel Created: \(urlString)")
-        //loader = DownloadImageAsyncLoader(urlString: urlString)
     }
     
     deinit {
