@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
+@MainActor
 class ImageLoadingViewModel: ObservableObject {
 
     @Published var image: UIImage?
@@ -55,29 +56,29 @@ class ImageLoadingViewModel: ObservableObject {
                 //let networkServiceManager = NetworkDataServiceManager(url: url)
                 let data = try await networkServiceManager.getData(url: url)
                 if let image = UIImage(data: data){
-                    await MainActor.run {
+                    //await MainActor.run {
                         isLoading = false
                         self.image = image
                         //cache the image
                         self.cacheManager.add(key: self.imageKey, value: image)
                         print("Downloaded image!")
-                    }
+                    //}
                 }
                 else {
-                    await MainActor.run {
+                    //await MainActor.run {
                         defaultImageOnError()
-                    }
+                    //}
                 }
             }
             else {
-                await MainActor.run {
+                //await MainActor.run {
                     defaultImageOnError()
-                }
+                //}
             }
         } catch {
-            await MainActor.run {
+            //await MainActor.run {
                 defaultImageOnError()
-            }
+            //}
         }
     }
     

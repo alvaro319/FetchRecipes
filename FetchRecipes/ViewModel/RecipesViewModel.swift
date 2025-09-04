@@ -7,6 +7,7 @@
 import Foundation
 
 //Uses Dependency Injection with NetworkDataServiceManagerProtocol
+@MainActor
 class RecipesViewModel: ObservableObject {
     
     @Published var recipes: [Recipe] = []
@@ -32,29 +33,29 @@ class RecipesViewModel: ObservableObject {
                 let jsonDecodedRecipes = try JSONDecoder().decode(RecipesModel.self, from: data)
                 
                 if(jsonDecodedRecipes.recipes.isEmpty){
-                    await MainActor.run {
+                    //await MainActor.run {
                         messageStr = "No Data Found"
                         show = true
-                    }
+                    //}
                 }
                 else {
                     //received good data
-                    await MainActor.run {
+                    //await MainActor.run {
                         show = false
                         self.recipes = jsonDecodedRecipes.recipes
                         print("recipes: \(recipes)")
                         print("Downloaded JSON!")
-                    }
+                    //}
                 }
             }
 
         }
         catch let error as NSError{
-            await MainActor.run {
+            //await MainActor.run {
                show = true
                 messageStr = "Malformed Data: " + error.localizedDescription
                 print("Failed to decode(malformed data): ", error.localizedDescription)
-            }
+            //}
         }
     }
 }
