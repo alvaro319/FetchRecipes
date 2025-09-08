@@ -38,31 +38,23 @@ struct RecipeImageView: View {
         }
         .task {
             imageLoaderViewModel.isLoading = true
+            
             //Need to know in this view if the user did a refresh or not
             //If user did a refresh, then we must fetch the JSON data again for any updates
-            if isRefresh {
-                if let url = URL(string: imageLoaderViewModel.urlString)
-                {
+            if let url = URL(string: imageLoaderViewModel.urlString)
+            {
+                if isRefresh {
                     print("REFRESH!!!, DOWNLOAD IMAGE!")
                     await imageLoaderViewModel.fetchImageAsyncLoader(url: url)
                 }
                 else {
-                    print("fetchImageAsynLoader: Invalid URL")
-                    imageLoaderViewModel.setDefaultImageOnError()
-                }
-            }
-            //else, call fetchImage() to first determine if the key of the current
-            //recipe's image is in the cache, if so, use the cached image.
-            else {
-                if let url = URL(string: imageLoaderViewModel.urlString)
-                {
-                    print("NOT REFRESH!!!, DOWNLOAD IMAGE!")
                     await imageLoaderViewModel.fetchImage(url: url)
                 }
-                else {
-                    print("fetchImage: Invalid URL")
-                    imageLoaderViewModel.setDefaultImageOnError()
-                }
+                
+            }
+            else {
+                print("Invalid URL")
+                imageLoaderViewModel.setDefaultImageOnError()
             }
         }
     }

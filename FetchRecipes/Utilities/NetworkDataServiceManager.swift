@@ -12,7 +12,7 @@ protocol NetworkDataServiceProtocol {
     func getData(url: URL) async throws -> Data
 }
 
-class NetworkDataServiceManager: NetworkDataServiceProtocol  {
+actor NetworkDataServiceManager: NetworkDataServiceProtocol  {
     
 //    let url: URL
 //    
