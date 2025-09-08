@@ -38,11 +38,11 @@ class ImageLoadingViewModel: ObservableObject {
     func fetchImage(url: URL) async {
         //get saved image from cache first, if not, download it
         if let savedImage = cacheManager.get(key: imageKey) {
-            await MainActor.run {
+            //await MainActor.run {
                 isLoading = false
                 image = savedImage
                 print("Retrieved from cache!")
-            }
+            //}
         }
         else {
             //download it
