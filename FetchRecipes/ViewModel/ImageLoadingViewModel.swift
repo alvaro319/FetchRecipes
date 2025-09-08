@@ -37,7 +37,7 @@ class ImageLoadingViewModel: ObservableObject {
 
     func fetchImage(url: URL) async {
         //get saved image from cache first, if not, download it
-        if let savedImage = cacheManager.get(key: imageKey) {
+        if let savedImage = await cacheManager.get(key: imageKey) {
             //await MainActor.run {
                 isLoading = false
                 image = savedImage
@@ -60,7 +60,7 @@ class ImageLoadingViewModel: ObservableObject {
                         isLoading = false
                         self.image = image
                         //cache the image
-                        self.cacheManager.add(key: self.imageKey, value: image)
+                        await self.cacheManager.add(key: self.imageKey, value: image)
                         print("Downloaded image!")
                     //}
                 }

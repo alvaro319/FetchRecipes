@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class PhotoModelCacheManager {
+actor PhotoModelCacheManager {
     
     //Singleton - only instance of this class in the entire app
     static let instance = PhotoModelCacheManager()
