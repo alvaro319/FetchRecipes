@@ -52,23 +52,16 @@ class ImageLoadingViewModel: ObservableObject {
 
     func fetchImageAsyncLoader(url: URL) async {
         do {
-            if let url = URL(string: self.urlString) {
-                //let networkServiceManager = NetworkDataServiceManager(url: url)
-                let data = try await networkServiceManager.getData(url: url)
-                if let image = UIImage(data: data){
-                    //await MainActor.run {
-                        isLoading = false
-                        self.image = image
-                        //cache the image
-                        await self.cacheManager.add(key: self.imageKey, value: image)
-                        print("Downloaded image!")
-                    //}
-                }
-                else {
-                    //await MainActor.run {
-                        defaultImageOnError()
-                    //}
-                }
+            //let networkServiceManager = NetworkDataServiceManager(url: url)
+            let data = try await networkServiceManager.getData(url: url)
+            if let image = UIImage(data: data){
+                //await MainActor.run {
+                    isLoading = false
+                    self.image = image
+                    //cache the image
+                    await self.cacheManager.add(key: self.imageKey, value: image)
+                    print("Downloaded image!")
+                //}
             }
             else {
                 //await MainActor.run {
