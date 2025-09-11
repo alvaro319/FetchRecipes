@@ -28,4 +28,4 @@ I tested the app with a Url that had malformed data and an empty data set. I did
 
 ### Additional Information
 
-I have pondered replacing the cache manager image persistence by leveraging SDWebImage or KingFisher SDKs. Some other features that may be added are an icon/launch screen along with adding an additional target to this project to include XCTesting. I was also thinking of creating a DetailsView when the user selects a recipe from a row. Time permitting, these features will be added.
+I have now created a similar FetchImage project replacing the cache manager image persistence by leveraging Kingfisher (created a wrapper than can also swap out Kingfisher for SDWebImage). It can be found here https://github.com/alvaro319/FetchRecipeWithSPM. Some other features that may be added are an icon/launch screen along with adding an additional target to this project to include XCTesting. I was also thinking of creating a DetailsView when the user selects a recipe from a row. Time permitting, these features will be added some time in the future.
